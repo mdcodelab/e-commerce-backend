@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 res.status(200).send("---- products --------");
 })
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 async function start() {
     await connectDB(process.env.MONGO_URI);
     console.log("connect to db")
