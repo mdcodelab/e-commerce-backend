@@ -13,7 +13,7 @@ res.status(200).json({msg: "my products", data: products, nbHits: products.lengt
 
 const getAllProducts = async (req, res) => {
     //console.log(req.query);
-    const {featured, company, name, price, rating}=req.query;
+    const {featured, company, name, sort}=req.query;
     const myObj={};
     if(featured) {
         myObj.featured=featured === "true" ? true : false
@@ -26,18 +26,17 @@ const getAllProducts = async (req, res) => {
     if(name) {
         myObj.name={$regex: name, $options: "i"}
     }
-
-    if(price) {
-        myObj.price=price;
-    }
-
-    if(rating) {
-        myObj.rating=rating
-    }
-
+    
     //const products = await Product.find(req.query);
-    const products = await Product.find(myObj);
+    const result = Product.find(myObj);
+    if(sort) {
+        const sortList = sort.split(",").join(" ");
+       result=result.sort(sortList);
+       //console.log(sort); (ex: sort name,price - insomnia)
+    }
+const products = await result;
 res.status(200).json({msg: "products route", data: products, nbHits: products.length})
 }
+
 
 module.exports={getAllProductsStatic, getAllProducts};
